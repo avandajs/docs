@@ -31,10 +31,10 @@ let articleLoaded = ref(false);
 let articleExerpts = null;
 const slug = useRoute().params.slug.toString().replace(/,/g, "/");
 let computedSlug = computed(() => {
-  return `/getting-started/${slug}`;
+  return `/components/${slug}`;
 });
 const { data: articleNav, pending } = await useAsyncData("navigation", () => {
-  return fetchContentNavigation(queryContent("getting-started"));
+  return fetchContentNavigation(queryContent("components"));
 });
 let unRefedArticleNav = unref(articleNav);
 // if (!slug) {

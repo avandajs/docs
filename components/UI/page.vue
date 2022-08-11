@@ -1,17 +1,18 @@
 <template>
   <div>
     <nav-bar></nav-bar>
-    <div class="flex justify-evenly max-w-7xl mx-auto px-4">
+    <div class="flex justify-evenly max-w-7xl mx-auto px-4 pt-4">
       <side-bar
         v-if="blogNav[0].children"
-        :page-titles="blogNav[0].children"
-        class="w-full max-w-[250px]"
+        :page-titles="blogNav"
+        class="w-full max-w-[250px] sticky top-20 h-full"
       ></side-bar>
       <div class="pb-10">
         <slot />
       </div>
-      <div v-if="showTableContent && blog.excerpt" class="w-full max-w-[250px] grid justify-end">
-        <div>
+      <div v-if="showTableContent && blog.excerpt" class="w-full max-w-[250px]">
+        <div class="sticky top-20">
+          <div class="grid justify-end">
           <h2 class="text-sm font-bold mb-4">Table Of Contents</h2>
           <ul class="space-y-2">
             <template v-for="(t, k) in toc" :key="`toc-item-${k}`">
@@ -28,6 +29,7 @@
               </li>
             </template>
           </ul>
+        </div>
         </div>
       </div>
     </div>
@@ -55,6 +57,7 @@ let props = withDefaults(defineProps<Props>(), {
 const { data: blogNav } = await useAsyncData("navigation", () => {
   return fetchContentNavigation(queryContent(props.title));
 });
+console.log(blogNav.value);
 const toc = computed(() => {
   if (!props.blog) return [];
   const items = props.blog.excerpt?.children;
