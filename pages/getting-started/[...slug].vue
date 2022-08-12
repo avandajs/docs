@@ -20,12 +20,17 @@
 </template>
 
 <script setup lang="ts">
-import Page from "../../components/UI/page.vue";
+import Page from '../../components/UI/page.vue'
 import { useRoute, useRouter } from "vue-router";
 import { useAsyncData } from "#app";
 import { queryContent } from "~~/.nuxt/imports";
 import { useGlobalStore } from "../../stores/global";
 import { useHead } from "~~/.nuxt/imports";
+
+
+definePageMeta({
+  layout: "page-render",
+})
 let store = useGlobalStore();
 let articleLoaded = ref(false);
 let articleExerpts = null;
@@ -36,13 +41,22 @@ let computedSlug = computed(() => {
 const { data: articleNav, pending } = await useAsyncData("navigation", () => {
   return fetchContentNavigation(queryContent("getting-started"));
 });
+const { path } = useRoute()
+
+const { data: article } = await useAsyncData(`content-${path}`, () => {
+  return queryContent().where({ _path: path }).findOne()
+})
+console.log(article)
+const { data } = await useAsyncData("navigation", () => {
+  return fetchContentNavigation(queryContent("getting-started"));
+});
 let unRefedArticleNav = unref(articleNav);
 // if (!slug) {
 //   useRouter().push(`${unRefedArticleNav[0].children[0]._path}`);
 // }
-const { data: article } = await useAsyncData(computedSlug.value, () => {
-  return queryContent(computedSlug.value).findOne();
-});
+// const { data: article } = await useAsyncData(computedSlug.value, () => {
+//   return queryContent(computedSlug.value).findOne();
+// });
 onMounted(() => {
   articleLoaded.value = true;
 });

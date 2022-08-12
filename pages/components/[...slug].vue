@@ -1,9 +1,9 @@
 <template>
-  <page
+  <!-- <page
     title="getting-started"
     :blog="article"
     :show-table-content="articleLoaded"
-  >
+  > -->
     <article class="">
       <ClientOnly>
         <ContentRenderer
@@ -16,17 +16,24 @@
         </ContentRenderer>
       </ClientOnly>
     </article>
-  </page>
+  <!-- </page> -->
 </template>
 
 <script setup lang="ts">
-import Page from "../../components/UI/page.vue";
 import { useRoute, useRouter } from "vue-router";
 import { useAsyncData } from "#app";
 import { queryContent } from "~~/.nuxt/imports";
 import { useGlobalStore } from "../../stores/global";
 import { useHead } from "~~/.nuxt/imports";
+
+
+definePageMeta({
+  layout: "page-render",
+})
 let store = useGlobalStore();
+
+
+
 let articleLoaded = ref(false);
 let articleExerpts = null;
 const slug = useRoute().params.slug.toString().replace(/,/g, "/");

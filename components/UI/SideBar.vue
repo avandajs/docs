@@ -3,7 +3,7 @@
   {{pageTitles}}
     <div class="">
       <nav class="">
-        <!-- <ul class="flex flex-col space-y-2">
+        <ul class="flex flex-col space-y-2">
           <li v-for="pageTitle in pageTitles" :key="pageTitle.slug">
             <router-link :to="`${pageTitle._path}`">
               {{ pageTitle.title }}
@@ -34,7 +34,7 @@
               </li>
             </ul>
           </li>
-        </ul> -->
+        </ul>
       </nav>
     </div>
   </div>

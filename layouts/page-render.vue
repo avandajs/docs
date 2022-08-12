@@ -1,13 +1,12 @@
 <template>
   <div>
-   <page>
-    <!-- <slot/> -->
-   </page>
+    <nav-bar></nav-bar>
+    <slot/>
   </div>
 </template>
 
 <script setup lang="ts">
-import Page from '../components/UI/page.vue'
+import NavBar from "../components/UI/NavBar.vue";
 </script>
 
 <style scoped></style>

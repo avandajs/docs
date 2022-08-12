@@ -1,12 +1,21 @@
 <template>
   <div>
-    <nav-bar></nav-bar>
     <div class="flex justify-evenly max-w-7xl mx-auto px-4 pt-4">
-      <side-bar
+      <!-- <side-bar
         v-if="blogNav[0].children"
         :page-titles="blogNav"
         class="w-full max-w-[250px] sticky top-20 h-full"
-      ></side-bar>
+      ></side-bar> -->
+      <!-- <nav class="w-full max-w-[250px] sticky top-20 h-full" v-if="blogNav[0].children">
+        <ul class="flex flex-col space-y-2">
+          {{blogNav[0]}}
+          <li v-for="(pageTitle, idx) in blogNav[0]" :key="idx">
+            <router-link :to="`${pageTitle._path}`">
+              {{ pageTitle.title }}
+            </router-link>
+          </li>
+        </ul>
+      </nav> -->
       <div class="pb-10">
         <slot />
       </div>
@@ -45,7 +54,7 @@ import { useAsyncData } from "#app";
 import { queryContent } from "~~/.nuxt/imports";
 import { useHead } from "~~/.nuxt/imports";
 interface Props {
-  title: string;
+  titles: object[];
   blog: object;
   showTableContent: boolean;
 }
@@ -53,11 +62,14 @@ let props = withDefaults(defineProps<Props>(), {
   title: "getting-started",
   showTableContent: false,
 });
-
-const { data: blogNav } = await useAsyncData("navigation", () => {
-  return fetchContentNavigation(queryContent(props.title));
-});
-console.log(blogNav.value);
+// let blogNav = null
+// const { data } = await useAsyncData("navigation", () => {
+//   return fetchContentNavigation(queryContent(props.title));
+// });
+// onMounted(() => {
+//   blogNav = data;
+// })
+// console.log(blogNav.value);
 const toc = computed(() => {
   if (!props.blog) return [];
   const items = props.blog.excerpt?.children;
