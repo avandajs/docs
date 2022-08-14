@@ -1,9 +1,6 @@
 <template>
-  <!-- <page
-    title="getting-started"
-    :blog="article"
-    :show-table-content="articleLoaded"
-  > -->
+  <page title="components" :blog="article" :show-table-content="articleLoaded">
+    {{ articleExerpts }}
     <article class="">
       <ClientOnly>
         <ContentRenderer
@@ -16,40 +13,56 @@
         </ContentRenderer>
       </ClientOnly>
     </article>
-  <!-- </page> -->
+  </page>
 </template>
 
 <script setup lang="ts">
+import Page from "../../components/UI/page.vue";
 import { useRoute, useRouter } from "vue-router";
 import { useAsyncData } from "#app";
 import { queryContent } from "~~/.nuxt/imports";
 import { useGlobalStore } from "../../stores/global";
 import { useHead } from "~~/.nuxt/imports";
 
-
 definePageMeta({
   layout: "page-render",
-})
+});
 let store = useGlobalStore();
-
-
-
 let articleLoaded = ref(false);
-let articleExerpts = null;
+let articleExerpts = ref(null);
 const slug = useRoute().params.slug.toString().replace(/,/g, "/");
 let computedSlug = computed(() => {
   return `/components/${slug}`;
 });
-const { data: articleNav, pending } = await useAsyncData("navigation", () => {
-  return fetchContentNavigation(queryContent("components"));
+onMounted(() => {
+  // if (!slug) {
+  //   useRouter().push(`/components/${unref(articleNav)[0].children[0]._path}`);
+  // }
+  const {
+    data,
+  } = async () => {
+    await useAsyncData("navigation", () => {
+      return fetchContentNavigation(queryContent("components"));
+    });
+  };
+  articleExerpts.value = data;
+  console.log(unref(data));
 });
-let unRefedArticleNav = unref(articleNav);
+const { path } = useRoute();
+
+const { data: article } = await useAsyncData(`content-${path}`, () => {
+  return queryContent().where({ _path: path }).findOne();
+});
+console.log(article);
+// const { data } = await useAsyncData("navigation", () => {
+//   return fetchContentNavigation(queryContent("components"));
+// });
 // if (!slug) {
 //   useRouter().push(`${unRefedArticleNav[0].children[0]._path}`);
 // }
-const { data: article } = await useAsyncData(computedSlug.value, () => {
-  return queryContent(computedSlug.value).findOne();
-});
+// const { data: article } = await useAsyncData(computedSlug.value, () => {
+//   return queryContent(computedSlug.value).findOne();
+// });
 onMounted(() => {
   articleLoaded.value = true;
 });

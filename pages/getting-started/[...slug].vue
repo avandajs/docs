@@ -4,6 +4,7 @@
     :blog="article"
     :show-table-content="articleLoaded"
   >
+  <!-- {{articleNav}} -->
     <article class="">
       <ClientOnly>
         <ContentRenderer
@@ -41,6 +42,7 @@ let computedSlug = computed(() => {
 const { data: articleNav, pending } = await useAsyncData("navigation", () => {
   return fetchContentNavigation(queryContent("getting-started"));
 });
+console.log(unref(articleNav))
 const { path } = useRoute()
 
 const { data: article } = await useAsyncData(`content-${path}`, () => {
@@ -50,7 +52,7 @@ console.log(article)
 const { data } = await useAsyncData("navigation", () => {
   return fetchContentNavigation(queryContent("getting-started"));
 });
-let unRefedArticleNav = unref(articleNav);
+// let unRefedArticleNav = unref(articleNav);
 // if (!slug) {
 //   useRouter().push(`${unRefedArticleNav[0].children[0]._path}`);
 // }
@@ -60,7 +62,9 @@ let unRefedArticleNav = unref(articleNav);
 onMounted(() => {
   articleLoaded.value = true;
 });
-
+watch (useRoute(), () => {
+  console.log("route changed", useRoute());
+})
 useHead({
   title: `${article.value.title}`,
 });
