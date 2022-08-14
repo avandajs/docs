@@ -1,16 +1,8 @@
 <template>
-  <page
-    title="getting-started"
-    :blog="article"
-    :show-table-content="articleLoaded"
-  >
-  <!-- {{articleNav}} -->
+  <page title="getting started" :blog="article" :show-table-content="articleLoaded">
     <article class="">
       <ClientOnly>
-        <ContentRenderer
-          class="prose lg:prose-base prose-sm prose-slate article-link pr-7 max-w-none"
-          :value="article"
-        >
+        <ContentRenderer class="prose lg:prose-base prose-sm prose-slate article-link pr-7 max-w-none" :value="article">
           <template #empty>
             <p>No content found.</p>
           </template>
@@ -48,22 +40,11 @@ const { path } = useRoute()
 const { data: article } = await useAsyncData(`content-${path}`, () => {
   return queryContent().where({ _path: path }).findOne()
 })
-console.log(article)
-const { data } = await useAsyncData("navigation", () => {
-  return fetchContentNavigation(queryContent("getting-started"));
-});
-// let unRefedArticleNav = unref(articleNav);
-// if (!slug) {
-//   useRouter().push(`${unRefedArticleNav[0].children[0]._path}`);
-// }
-// const { data: article } = await useAsyncData(computedSlug.value, () => {
-//   return queryContent(computedSlug.value).findOne();
-// });
+watch(useRoute(), () => {
+  console.log("route changed", useRoute());
+})
 onMounted(() => {
   articleLoaded.value = true;
-});
-watch (useRoute(), () => {
-  console.log("route changed", useRoute());
 })
 useHead({
   title: `${article.value.title}`,
@@ -78,9 +59,8 @@ console.log({ prev, next });
 .article-link {
   @apply prose-a:text-pry-dark before:prose-headings:content-['#'] before:prose-headings:mr-1 before:prose-headings:text-pry-dark before:prose-h1:content-[''];
 }
-.lg\:prose-base
-  :where(tbody td:last-child, tfoot
-    td:last-child):not(:where([class~="not-prose"] *)) {
+
+.lg\:prose-base :where(tbody td:last-child, tfoot td:last-child):not(:where([class~="not-prose"] *)) {
   max-width: 200px;
 }
 </style>

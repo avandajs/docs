@@ -2,19 +2,19 @@
   <header class="h-header u-border-gray-100 sticky top-0 z-50 w-full border-b  backdrop-blur  bg-white">
     <nav class="max-w-7xl mx-auto ">
       <div class="flex justify-between items-center mx-auto py-2 lg-px-4">
-        <a href="/"
+        <router-link to="/"
           ><div class="">
             <img src="/Home-logo.png" alt="avanda logo" /></div
-        ></a>
+        ></router-link>
         <ul class="flex gap-4 ali">
           <li class="">
-            <a href="/getting-started/quick-start">Get Started</a>
+            <router-link to="/getting-started/quick-start">Get Started</router-link>
           </li>
-          <li class=""><a href="/guide">Guide</a></li>
+          <li class=""><router-link to="/guide">Guide</router-link></li>
           <li class="">
-            <a href="/components/avanda-cli">Components</a>
+            <router-link to="/components/avanda-cli">Components</router-link>
           </li>
-          <li class=""><a href="/api">API</a></li>
+          <li class=""><router-link to="/api">API</router-link></li>
         </ul>
 
         <ul class="flex gap-4">

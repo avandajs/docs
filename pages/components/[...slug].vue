@@ -1,12 +1,8 @@
 <template>
   <page title="components" :blog="article" :show-table-content="articleLoaded">
-    {{ articleExerpts }}
     <article class="">
       <ClientOnly>
-        <ContentRenderer
-          class="prose lg:prose-base prose-sm prose-slate article-link pr-7 max-w-none"
-          :value="article"
-        >
+        <ContentRenderer class="prose lg:prose-base prose-sm prose-slate article-link pr-7 max-w-none" :value="article">
           <template #empty>
             <p>No content found.</p>
           </template>
@@ -23,46 +19,23 @@ import { useAsyncData } from "#app";
 import { queryContent } from "~~/.nuxt/imports";
 import { useGlobalStore } from "../../stores/global";
 import { useHead } from "~~/.nuxt/imports";
+import onOpenRoute from "~~/plugins/on-open-route";
 
 definePageMeta({
   layout: "page-render",
 });
-let store = useGlobalStore();
 let articleLoaded = ref(false);
-let articleExerpts = ref(null);
+let store = useGlobalStore();
 const slug = useRoute().params.slug.toString().replace(/,/g, "/");
 let computedSlug = computed(() => {
   return `/components/${slug}`;
-});
-onMounted(() => {
-  // if (!slug) {
-  //   useRouter().push(`/components/${unref(articleNav)[0].children[0]._path}`);
-  // }
-  const {
-    data,
-  } = async () => {
-    await useAsyncData("navigation", () => {
-      return fetchContentNavigation(queryContent("components"));
-    });
-  };
-  articleExerpts.value = data;
-  console.log(unref(data));
 });
 const { path } = useRoute();
 
 const { data: article } = await useAsyncData(`content-${path}`, () => {
   return queryContent().where({ _path: path }).findOne();
 });
-console.log(article);
-// const { data } = await useAsyncData("navigation", () => {
-//   return fetchContentNavigation(queryContent("components"));
-// });
-// if (!slug) {
-//   useRouter().push(`${unRefedArticleNav[0].children[0]._path}`);
-// }
-// const { data: article } = await useAsyncData(computedSlug.value, () => {
-//   return queryContent(computedSlug.value).findOne();
-// });
+
 onMounted(() => {
   articleLoaded.value = true;
 });
@@ -80,9 +53,8 @@ console.log({ prev, next });
 .article-link {
   @apply prose-a:text-pry-dark before:prose-headings:content-['#'] before:prose-headings:mr-1 before:prose-headings:text-pry-dark before:prose-h1:content-[''];
 }
-.lg\:prose-base
-  :where(tbody td:last-child, tfoot
-    td:last-child):not(:where([class~="not-prose"] *)) {
+
+.lg\:prose-base :where(tbody td:last-child, tfoot td:last-child):not(:where([class~="not-prose"] *)) {
   max-width: 200px;
 }
 </style>

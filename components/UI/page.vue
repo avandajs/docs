@@ -1,17 +1,36 @@
 <template>
   <div>
     <div class="flex justify-evenly max-w-7xl mx-auto px-4 pt-4">
-      <nav class="w-full max-w-[250px] sticky top-20 h-full" v-if="sideBarTitles">
+      <!-- <nav class="w-full max-w-[250px] sticky top-20 h-full" v-if="computedSideBarTitles">
         <ul class="flex flex-col space-y-2">
-          <li v-for="(pageTitleChild, idx) in sideBarTitles[0].children" :key="idx">
-            <h1 v-if="sideBarTitles[0].title" class="text-bold">
-              {{ sideBarTitles[0].title }}
+          <li v-for="(pageTitleChild, idx) in computedSideBarTitles[0].children" :key="idx">
+            <h1 v-if="computedSideBarTitles[0].title" class="text-bold">
+              {{ computedSideBarTitles[0].title }}
             </h1>
             <router-link :to="`${pageTitleChild._path}`">
               {{ pageTitleChild.title }}
             </router-link>
           </li>
         </ul>
+      </nav> -->
+      <nav class="w-full max-w-[250px] sticky top-20 h-full">
+        <ContentNavigation v-slot="{ navigation }">
+          <div v-for="link of navigation" :key="link._path">
+            <div v-if="link.title.toLowerCase() === title" class="min-w-[250px]">
+              <!-- {{ link }} -->
+              <ul class="flex flex-col space-y-2">
+                <li v-for="(pageTitleChild, idx) in link.children" :key="idx">
+                  <!-- <h1 v-if="link.title" class="text-bold">
+                    {{ link.title }}
+                  </h1> -->
+                  <router-link :to="`${pageTitleChild._path}`">
+                    {{ pageTitleChild.title }}
+                  </router-link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </ContentNavigation>
       </nav>
       <div class="pb-10">
         <slot />
@@ -41,42 +60,45 @@
 <script setup lang="ts">
 import SideBar from "./SideBar.vue";
 import NavBar from "./NavBar.vue";
-import { useRoute } from "vue-router";
+import { onBeforeRouteLeave, onBeforeRouteUpdate, useRoute } from "vue-router";
 import { useAsyncData } from "#app";
 import { queryContent } from "~~/.nuxt/imports";
 import { useHead } from "~~/.nuxt/imports";
+import { useGlobalStore } from "../../stores/global"
 interface Props {
   title: string;
   blog: object;
   showTableContent: boolean;
 }
 let props = withDefaults(defineProps<Props>(), {
-  title: "getting-started",
+  title: "getting started",
   showTableContent: false,
 });
+let store = useGlobalStore();
 let sideBarTitles = ref(null)
+let testTitle = ref(null)
 let computedTitle = computed(() => {
+  if (testTitle.value) {
+    return testTitle.value
+  }
   return props.title
 })
-// watch(useRoute(), async () => {
-//   console.log("computedTitle")
-//   const { data } = await useAsyncData("navigation", () => {
-//     return fetchContentNavigation(queryContent(computedTitle.value));
-//   });
-//   console.log("computedTitleData", data)
-//   sideBarTitles.value = data;
-// }, { immediate: true })
-async function fetchSideBarDetails(){
-  const { data } = await useAsyncData("navigation", () => {
-    return fetchContentNavigation(queryContent(computedTitle.value));
-  });
-  sideBarTitles.value = data.value;
-  console.log(sideBarTitles.value)
-}
-onMounted(() => {
-  fetchSideBarDetails()
+let computedSideBarTitles = computed(() => {
+  return store.sideBarTitles
 })
-
+onBeforeRouteLeave((to, from, next) => {
+  // store.sideBarTitles = computedTitle.value
+  console.log("this is befor leave", to.path)
+  testTitle.value = to.path.split("/")[1]
+  console.log(to.path.split("/")[1])
+  store.getSidebarTitles(to.path.split("/")[1])
+  console.log(store.sideBarTitles)
+  next()
+})
+onBeforeMount(() => {
+  console.log("this is befor mount")
+  store.getSidebarTitles(computedTitle)
+})
 const toc = computed(() => {
   if (!props.blog) return [];
   const items = props.blog.excerpt?.children;
