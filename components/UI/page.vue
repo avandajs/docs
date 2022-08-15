@@ -20,12 +20,24 @@
               <!-- {{ link }} -->
               <ul class="flex flex-col space-y-2">
                 <li v-for="(pageTitleChild, idx) in link.children" :key="idx">
-                  <!-- <h1 v-if="link.title" class="text-bold">
-                    {{ link.title }}
-                  </h1> -->
-                  <router-link :to="`${pageTitleChild._path}`">
+                  <h1 v-if="pageTitleChild.children" class="text-bold">
                     {{ pageTitleChild.title }}
-                  </router-link>
+                  </h1>
+                  <ul v-if="pageTitleChild.children" class="list-inside mt-4 pl-2 space-y-3">
+                    <li v-for="i in pageTitleChild.children">
+                      <router-link :to="`${i._path}`">
+                        {{ i.title }}
+                      </router-link>
+                    </li>
+                  </ul>
+                  <ul v-else class="list-inside mt-4 pl-2 space-y-3">
+                    <li
+                      class="">
+                      <router-link :to="`${pageTitleChild._path}`">
+                        {{ pageTitleChild.title }}
+                      </router-link>
+                    </li>
+                  </ul>
                 </li>
               </ul>
             </div>

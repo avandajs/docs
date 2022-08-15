@@ -12,7 +12,7 @@
           </li>
           <li class=""><router-link to="/guide">Guide</router-link></li>
           <li class="">
-            <router-link to="/components/avanda-cli">Components</router-link>
+            <router-link to="/components/avanda-cli/overview">Components</router-link>
           </li>
           <li class=""><router-link to="/api">API</router-link></li>
         </ul>
