@@ -47,7 +47,7 @@
       <div class="pb-10">
         <slot />
       </div>
-      <div v-if="showTableContent && blog.excerpt" class="w-full max-w-[250px]">
+      <div v-if="showTableContent && toc" class="w-full max-w-[250px]">
         <div class="sticky top-20">
           <div class="grid justify-end">
             <h2 class="text-sm font-bold mb-4">Table Of Contents</h2>
