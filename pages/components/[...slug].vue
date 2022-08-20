@@ -19,7 +19,6 @@ import { useAsyncData } from "#app";
 import { queryContent } from "~~/.nuxt/imports";
 import { useGlobalStore } from "../../stores/global";
 import { useHead } from "~~/.nuxt/imports";
-import onOpenRoute from "~~/plugins/on-open-route";
 
 definePageMeta({
   layout: "page-render",
@@ -38,11 +37,14 @@ const { data: article } = await useAsyncData(`content-${path}`, () => {
 
 onMounted(() => {
   articleLoaded.value = true;
+  console.log(article)
 });
 
-useHead({
-  title: `${article.value.title}`,
-});
+if(article.value) {
+  useHead({
+    title: `${article.value.title}`,
+  });
+}
 const [prev, next] = await queryContent(computedSlug.value).findSurround(
   computedSlug.value
 );

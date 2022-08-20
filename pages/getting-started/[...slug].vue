@@ -46,9 +46,11 @@ watch(useRoute(), () => {
 onMounted(() => {
   articleLoaded.value = true;
 })
-useHead({
-  title: `${article.value.title}`,
-});
+if(article.value) {
+  useHead({
+    title: `${article.value.title}`,
+  });
+}
 const [prev, next] = await queryContent(computedSlug.value).findSurround(
   computedSlug.value
 );

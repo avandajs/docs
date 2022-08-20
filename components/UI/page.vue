@@ -95,22 +95,22 @@ let computedTitle = computed(() => {
   }
   return props.title
 })
-let computedSideBarTitles = computed(() => {
-  return store.sideBarTitles
-})
-onBeforeRouteLeave((to, from, next) => {
-  // store.sideBarTitles = computedTitle.value
-  console.log("this is befor leave", to.path)
-  testTitle.value = to.path.split("/")[1]
-  console.log(to.path.split("/")[1])
-  store.getSidebarTitles(to.path.split("/")[1])
-  console.log(store.sideBarTitles)
-  next()
-})
-onBeforeMount(() => {
-  console.log("this is befor mount")
-  store.getSidebarTitles(computedTitle)
-})
+// let computedSideBarTitles = computed(() => {
+//   return store.sideBarTitles
+// })
+// onBeforeRouteLeave((to, from, next) => {
+//   // store.sideBarTitles = computedTitle.value
+//   console.log("this is befor leave", to.path)
+//   testTitle.value = to.path.split("/")[1]
+//   console.log(to.path.split("/")[1])
+//   store.getSidebarTitles(to.path.split("/")[1])
+//   console.log(store.sideBarTitles)
+//   next()
+// })
+// onBeforeMount(() => {
+//   console.log("this is befor mount")
+//   store.getSidebarTitles(computedTitle)
+// })
 const toc = computed(() => {
   if (!props.blog) return [];
   const items = props.blog.excerpt?.children;
