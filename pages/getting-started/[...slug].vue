@@ -34,7 +34,7 @@ let computedSlug = computed(() => {
 const { data: articleNav, pending } = await useAsyncData("navigation", () => {
   return fetchContentNavigation(queryContent("getting-started"));
 });
-console.log(unref(articleNav))
+// console.log(unref(articleNav))
 const { path } = useRoute()
 
 const { data: article } = await useAsyncData(`content-${path}`, () => {

@@ -30,7 +30,13 @@ let computedSlug = computed(() => {
   return `/components/${slug}`;
 });
 const { path } = useRoute();
-
+// let article = ref(null);
+// async function getArticle() {
+//   article.value = await queryContent().where({ _path: path }).findOne();
+// }
+// if(slug) {
+//   getArticle();
+// }
 const { data: article } = await useAsyncData(`content-${path}`, () => {
   return queryContent().where({ _path: path }).findOne();
 });
