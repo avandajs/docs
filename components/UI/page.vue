@@ -16,7 +16,7 @@
       <nav class="w-full max-w-[250px] sticky top-20 h-full">
         <ContentNavigation v-slot="{ navigation }">
           <div v-for="link of navigation" :key="link._path">
-            <div v-if="link.title.toLowerCase() === title" class="min-w-[250px]">
+            <div v-if="link.title.toLowerCase() === title" class="">
               <!-- {{ link }} -->
               <ul class="flex flex-col space-y-2">
                 <li v-for="(pageTitleChild, idx) in link.children" :key="idx">

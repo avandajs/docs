@@ -1,5 +1,5 @@
 <template>
-  <div class="container w-full  not-prose rounded-md px-4 pt-2 pb-4 bg-pry-code_light  relative">
+  <div class="container w-full  not-prose rounded-md px-4 pt-2 pb-4 bg-pry-code_light  max-w-full overflow-x-auto  relative">
     <div class="language-con" v-if="language">
         <p class="">{{language}}</p>
     </div>

@@ -2,7 +2,7 @@
   <page title="getting started" :blog="article" :show-table-content="articleLoaded">
     <article class="">
       <ClientOnly>
-        <ContentRenderer class="prose lg:prose-base prose-sm prose-slate article-link pr-7 max-w-none" :value="article">
+        <ContentRenderer class="prose lg:prose-base prose-sm prose-slate article-link pr-7 max-w-[800px]" :value="article">
           <template #empty>
             <p>No content found.</p>
           </template>
