@@ -2,7 +2,7 @@
     <page title="api" :blog="article" :show-table-content="articleLoaded">
       <article class="">
         <ClientOnly>
-          <ContentRenderer class="prose lg:prose-base prose-sm prose-slate article-link pr-7 " :value="article">
+          <ContentRenderer class="prose lg:prose-base prose-sm prose-slate article-link lg:px-7  md:w-full  lg:max-w-[800px] mx-auto" :value="article">
             <template #empty>
               <p>No content found.</p>
             </template>
