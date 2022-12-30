@@ -7,7 +7,7 @@
           ><div class="">
             <img src="/Home-logo.png" alt="avanda logo" /></div
         ></router-link>
-        <ul class="absolute top-20 md:top-0 p-4 md:text-md min-w-[300px] md:min-w-auto  right-6 rounded-md bg-white md:bg-transparent md:relative  flex-col md:flex-row gap-4 ali" :class="verticalMenu? 'flex':'hidden'">
+        <ul class="absolute top-20 md:top-0 p-4 md:text-md min-w-[300px] md:min-w-auto  right-6 rounded-md bg-white md:bg-transparent md:relative md:flex flex-col md:flex-row gap-4 " :class="verticalMenu? 'flex':'hidden'">
           <li class="">
             <router-link to="/getting-started/quick-start">Get Started</router-link>
           </li>

@@ -11,7 +11,7 @@
 	@apply bg-gradient-to-r from-pry-dark to-pink-600;
 }
 
-.page-enter-active,
+/* .page-enter-active,
 .page-leave-active {
 	transition: all 0.3s ease-in-out;
 }
@@ -20,4 +20,4 @@
 .page-leave-to {
 	opacity: 0;
 	transform: scale(0.99);
-}
+} */

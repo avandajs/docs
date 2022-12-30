@@ -1,5 +1,6 @@
 <template>
     <page title="guide" :blog="article" :show-table-content="articleLoaded">
+      <!-- <h1 v-if="computedDocLoading" class="text-4xl">Loading</h1> -->
       <article class="">
         <ClientOnly>
           <ContentRenderer class="prose lg:prose-base prose-sm prose-slate article-link lg:px-7  md:w-full  lg:max-w-[800px] mx-auto" :value="article">
@@ -31,9 +32,12 @@
   let computedSlug = computed(() => {
     return `/guide/${slug}`;
   });
-  const { data: articleNav, pending } = await useAsyncData("navigation", () => {
-    return fetchContentNavigation(queryContent("getting-started"));
-  });
+  let computedDocLoading = computed(() => {
+    return store.docLoading
+  })
+  // const { data: articleNav, pending } = await useAsyncData("navigation", () => {
+  //   return fetchContentNavigation(queryContent("getting-started"));
+  // });
   // console.log(unref(articleNav))
   const { path } = useRoute()
   
@@ -41,17 +45,20 @@
     return queryContent().where({ _path: path }).findOne()
   })
   watch(useRoute(), () => {
-    console.log("route changed", useRoute());
+    console.log("route changed", store.gloablVar);
+    store.changeDocLoading(true)
+
   })
   onMounted(() => {
     articleLoaded.value = true;
+    store.changeDocLoading(false)
   })
   if(article.value) {
     useHead({
       title: `${article.value.title}`,
     });
   }
-  const [prev, next] = await queryContent(computedSlug.value).findSurround(
+  const [prev, next] = await queryContent().findSurround(
     computedSlug.value
   );
   console.log({ prev, next });

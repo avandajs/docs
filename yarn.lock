@@ -3069,12 +3069,7 @@
   "resolved" "https://registry.npmjs.org/is-decimal/-/is-decimal-2.0.1.tgz"
   "version" "2.0.1"
 
-"is-docker@^2.0.0":
-  "integrity" "sha512-F+i2BKsFrH66iaUFc0woD8sLy8getkwTwtOBjvs56Cx4CgJDeKQeqfz8wAYiSb8JOprWhHH5p77PbmYCvvUuXQ=="
-  "resolved" "https://registry.npmjs.org/is-docker/-/is-docker-2.2.1.tgz"
-  "version" "2.2.1"
-
-"is-docker@^2.1.1":
+"is-docker@^2.0.0", "is-docker@^2.1.1":
   "integrity" "sha512-F+i2BKsFrH66iaUFc0woD8sLy8getkwTwtOBjvs56Cx4CgJDeKQeqfz8wAYiSb8JOprWhHH5p77PbmYCvvUuXQ=="
   "resolved" "https://registry.npmjs.org/is-docker/-/is-docker-2.2.1.tgz"
   "version" "2.2.1"

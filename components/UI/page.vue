@@ -1,9 +1,14 @@
 <template>
   <div>
     <nav-bar class="" @click-nav="handleShowNav"></nav-bar>
-
+    <div class="progress-bar bg-pry-light h-2 w-full" v-if="isDocsLoading">
+      <div class="progress" :style="`width: ${progressWidth}` + '%'"></div>
+    </div>
+    {{ progressWidth }}
     <div class="block md:flex md:justify-evenly max-w-7xl mx-auto px-4 pt-4">
-      <nav class="md:w-full max-w-[250px] md:sticky md:top-20 h-full fixed top-16  md:block z-30 md:z-10 bg-white md:bg-transparent overflow-y-auto max-h-screen md:text-center md:max-h-[90vh] pb-30" :class="showNav? 'w-full':'w-0'">
+      <nav
+        class="md:w-full max-w-[250px] md:sticky md:top-20 h-full fixed top-16  md:block z-30 md:z-10 bg-white md:bg-transparent overflow-y-auto max-h-screen md:text-center md:max-h-[90vh] pb-30"
+        :class="showNav ? 'w-full' : 'w-0'">
         <ContentNavigation v-slot="{ navigation }">
           <div v-for="link of navigation" :key="link._path">
             <div v-if="link.title.toLowerCase() === title" class="">
@@ -21,8 +26,7 @@
                     </li>
                   </ul>
                   <ul v-else class="list-inside mt-4 pl-2 space-y-3">
-                    <li
-                      class="">
+                    <li class="">
                       <router-link :to="`${pageTitleChild._path}`">
                         {{ pageTitleChild.title }}
                       </router-link>
@@ -49,18 +53,27 @@
                     'text-[13px] ml-6': t.depth > 2,
                   }" class="capitalize" :to="`#${t.id}`">{{ t.title }}</router-link>
                 </li>
-                
+
               </template>
             </ul>
           </div>
         </div>
       </div>
     </div>
-    <div class="bottom-nav">Avanda Js</div>
+    <div class="bottom-nav flex justify-between items-center min-w-[200px] px-10 py-8">
+      <router-link :to="prev._path">
+        <prev-button :title-details="computedSourround.prev"></prev-button>
+      </router-link>
+      <router-link :to="next._path">
+        <next-button :title-details="computedSourround.next"></next-button>
+      </router-link>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import NextButton from './next-button.vue'
+import PrevButton from './prev-button.vue'
 import SideBar from "./SideBar.vue";
 import NavBar from "./NavBar.vue";
 import { onBeforeRouteLeave, onBeforeRouteUpdate, useRoute } from "vue-router";
@@ -77,6 +90,7 @@ let props = withDefaults(defineProps<Props>(), {
   title: "getting started",
   showTableContent: false,
 });
+let progressWidth = ref(0);
 let showNav = ref(false);
 let store = useGlobalStore();
 let sideBarTitles = ref(null)
@@ -90,6 +104,51 @@ let computedTitle = computed(() => {
 function handleShowNav() {
   showNav.value = !showNav.value;
 }
+let isDocsLoading = computed(() => store.docLoading);
+// increase progressWidth till isDocsLoading is false
+// watch(isDocsLoading, (val) => {
+//   console.log("isDocsLoading", isDocsLoading.value);
+//   if (val) {
+//     console.log("isDocsLoading2", isDocsLoading.value);
+//     let interval = setInterval(() => {
+//       progressWidth.value += 10;
+//       if (progressWidth.value = 100) {
+//         clearInterval(interval);
+//         progressWidth.value = 0
+//       }
+//     }, 100);
+//   }
+// });
+async function fetchData() {
+  console.log("isDocsLoading", isDocsLoading.value);
+
+
+  // Set the progress bar to 0%
+  let progress = 0;
+  while (isDocsLoading.value && progress < 100) {
+    console.log("isDocsLoading22", isDocsLoading.value, progress);
+    // Fetch the data here
+
+    // Increment the progress bar by 10%
+    if (progress < 100) {
+      if (progress == 80 && isDocsLoading.value) {
+        progress += 5
+      } else {
+        progress += 10
+      }
+    }
+
+    // Update the progress value
+    progressWidth.value = progress;
+
+    // Sleep for 1 second to slow down the loop
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  }
+}
+watch(isDocsLoading, (val) => {
+  fetchData()
+}, { immediate: true });
+
 // let computedSideBarTitles = computed(() => {
 //   return store.sideBarTitles
 // })
@@ -123,7 +182,39 @@ const toc = computed(() => {
   });
   return toc;
 });
+let { path } = useRoute()
+console.log({ path })
+const [prev, next] = await queryContent().only(['_path', 'title']).findSurround(path);
+console.log({ prev, next });
+let computedSourround = computed(() => {
+  return {
+    prev: {
+      title: prev?.title,
+      pathText: prev?._path.split("/")[1]
+    },
+    next: {
+      title: next?.title,
+      pathText: next?._path.split("/")[1]
+    }
+  }
+})
 </script>
 
-<style scoped>
+<style>
+.article-link {
+  @layer prose-a: text-pry-dark before:prose-headings:content-['#'] before:prose-headings:mr-1 before:prose-headings:text-pry-dark before:prose-h1:content-[''];
+}
+
+
+.progress-bar>div {
+  height: 100%;
+  border-radius: 10px;
+  /* background-image: linear-gradient(to right, lightskyblue, blue); */
+  /* background-size: 360px 100%; */
+  transition: width 200ms;
+}
+
+.progress-bar>div {
+  @apply bg-gradient-to-r from-pry-dark to-pink-600;
+}
 </style>
