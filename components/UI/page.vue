@@ -4,7 +4,6 @@
     <div class="progress-bar bg-pry-light h-2 w-full" v-if="isDocsLoading">
       <div class="progress" :style="`width: ${progressWidth}` + '%'"></div>
     </div>
-    {{ progressWidth }}
     <div class="block md:flex md:justify-evenly max-w-7xl mx-auto px-4 pt-4">
       <nav
         class="md:w-full max-w-[250px] md:sticky md:top-20 h-full fixed top-16  md:block z-30 md:z-10 bg-white md:bg-transparent overflow-y-auto max-h-screen md:text-center md:max-h-[90vh] pb-30"
@@ -60,12 +59,13 @@
         </div>
       </div>
     </div>
-    <div class="bottom-nav flex justify-between items-center min-w-[200px] px-10 py-8">
-      <router-link :to="prev._path">
-        <prev-button :title-details="computedSourround.prev"></prev-button>
+    <div class="bottom-nav flex justify-between items-center min-w-[200px] px-10 py-8" v-if="showPrevNext">
+      <router-link :to="prev._path" v-if="prev">
+        <!-- {{ computedSourround }} -->
+        <prev-button :title-details="prev"></prev-button>
       </router-link>
-      <router-link :to="next._path">
-        <next-button :title-details="computedSourround.next"></next-button>
+      <router-link :to="next._path" v-if="next" class="">
+        <next-button :title-details="next"></next-button>
       </router-link>
     </div>
   </div>
@@ -105,42 +105,23 @@ function handleShowNav() {
   showNav.value = !showNav.value;
 }
 let isDocsLoading = computed(() => store.docLoading);
-// increase progressWidth till isDocsLoading is false
-// watch(isDocsLoading, (val) => {
-//   console.log("isDocsLoading", isDocsLoading.value);
-//   if (val) {
-//     console.log("isDocsLoading2", isDocsLoading.value);
-//     let interval = setInterval(() => {
-//       progressWidth.value += 10;
-//       if (progressWidth.value = 100) {
-//         clearInterval(interval);
-//         progressWidth.value = 0
-//       }
-//     }, 100);
-//   }
-// });
 async function fetchData() {
   console.log("isDocsLoading", isDocsLoading.value);
-
-
   // Set the progress bar to 0%
   let progress = 0;
-  while (isDocsLoading.value && progress < 100) {
+  while (isDocsLoading.value && progress <= 100) {
     console.log("isDocsLoading22", isDocsLoading.value, progress);
     // Fetch the data here
-
     // Increment the progress bar by 10%
     if (progress < 100) {
       if (progress == 80 && isDocsLoading.value) {
-        progress += 5
+        progress += 1
       } else {
-        progress += 10
+        progress += 2
       }
     }
-
     // Update the progress value
     progressWidth.value = progress;
-
     // Sleep for 1 second to slow down the loop
     await new Promise(resolve => setTimeout(resolve, 1000));
   }
@@ -148,7 +129,6 @@ async function fetchData() {
 watch(isDocsLoading, (val) => {
   fetchData()
 }, { immediate: true });
-
 // let computedSideBarTitles = computed(() => {
 //   return store.sideBarTitles
 // })
@@ -184,28 +164,31 @@ const toc = computed(() => {
 });
 let { path } = useRoute()
 console.log({ path })
-const [prev, next] = await queryContent().only(['_path', 'title']).findSurround(path);
+let showPrevNext = ref(false)
+const [prev, next] = await queryContent().findSurround(path);
+if (prev || next) {
+  showPrevNext.value = true
+}
+
 console.log({ prev, next });
 let computedSourround = computed(() => {
   return {
-    prev: {
+    prev:{
       title: prev?.title,
-      pathText: prev?._path.split("/")[1]
+      path: prev?._path
     },
-    next: {
+    next:{
       title: next?.title,
-      pathText: next?._path.split("/")[1]
+      path: next?._path
     }
   }
 })
 </script>
 
-<style>
+<style scoped>
 .article-link {
   @layer prose-a: text-pry-dark before:prose-headings:content-['#'] before:prose-headings:mr-1 before:prose-headings:text-pry-dark before:prose-h1:content-[''];
 }
-
-
 .progress-bar>div {
   height: 100%;
   border-radius: 10px;
@@ -213,7 +196,6 @@ let computedSourround = computed(() => {
   /* background-size: 360px 100%; */
   transition: width 200ms;
 }
-
 .progress-bar>div {
   @apply bg-gradient-to-r from-pry-dark to-pink-600;
 }

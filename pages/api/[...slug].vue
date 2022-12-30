@@ -41,10 +41,15 @@
     return queryContent().where({ _path: path }).findOne();
   });
   
+  watch(useRoute(), () => {
+    console.log("route changed", store.gloablVar);
+    store.changeDocLoading(true)
+
+  })
   onMounted(() => {
     articleLoaded.value = true;
-    console.log(article)
-  });
+    store.changeDocLoading(false)
+  })
   
   if(article.value) {
     useHead({

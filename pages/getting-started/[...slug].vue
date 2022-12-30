@@ -2,7 +2,9 @@
   <page title="getting started" :blog="article" :show-table-content="articleLoaded">
     <article class="">
       <ClientOnly>
-        <ContentRenderer class="prose lg:prose-base prose-sm prose-slate article-link lg:px-7  md:w-full  lg:max-w-[800px] mx-auto max-w-[800px]" :value="article">
+        <ContentRenderer
+          class="prose lg:prose-base prose-sm prose-slate article-link lg:px-7  md:w-full  lg:max-w-[800px] mx-auto max-w-[800px]"
+          :value="article">
           <template #empty>
             <p>No content found.</p>
           </template>
@@ -41,12 +43,15 @@ const { data: article } = await useAsyncData(`content-${path}`, () => {
   return queryContent().where({ _path: path }).findOne()
 })
 watch(useRoute(), () => {
-  console.log("route changed", useRoute());
+  console.log("route changed", store.gloablVar);
+  store.changeDocLoading(true)
+
 })
 onMounted(() => {
   articleLoaded.value = true;
+  store.changeDocLoading(false)
 })
-if(article.value) {
+if (article.value) {
   useHead({
     title: `${article.value.title}`,
   });
@@ -59,7 +64,7 @@ console.log({ prev, next });
 
 <style scoped>
 .article-link {
-  @apply prose-a:text-pry-dark before:prose-headings:content-['#'] before:prose-headings:mr-1 before:prose-headings:text-pry-dark before:prose-h1:content-[''];
+  @layer prose-a: text-pry-dark before:prose-headings:content-['#'] before:prose-headings:mr-1 before:prose-headings:text-pry-dark before:prose-h1:content-[''];
 }
 
 .lg\:prose-base :where(tbody td:last-child, tfoot td:last-child):not(:where([class~="not-prose"] *)) {
