@@ -16,11 +16,13 @@ module.exports = {
         pry: {
           light: "#E2A8D5",
           dark: "#A140BE",
+          darker: "#4B2A6B",
           code_light: "#0f172a"
         }
       },
       fontFamily: {
-        sans: ["Inter"],
+        sans: ["Inter", "sans-serif"],
+        raleway: ["Raleway", "sans-serif"],
       },
     },
   },
