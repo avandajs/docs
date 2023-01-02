@@ -56,10 +56,10 @@
       title: `${article.value.title}`,
     });
   }
-  const [prev, next] = await queryContent(computedSlug.value).findSurround(
-    computedSlug.value
-  );
-  console.log({ prev, next });
+  // const [prev, next] = await queryContent(computedSlug.value).findSurround(
+  //   computedSlug.value
+  // );
+  // console.log({ prev, next });
   </script>
   
   <style scoped>

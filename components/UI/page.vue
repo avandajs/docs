@@ -6,18 +6,25 @@
     </div>
     <div class="block md:flex md:justify-evenly max-w-7xl mx-auto px-4 pt-4">
       <nav
-        class="md:w-full max-w-[250px] md:sticky md:top-20 h-full fixed top-16  md:block z-30 md:z-10 bg-white md:bg-transparent overflow-y-auto max-h-screen md:text-center md:max-h-[90vh] pb-30"
-        :class="showNav ? 'w-full' : 'w-0'">
+        class="md:w-full max-w-[250px] md:sticky md:top-20 h-full fixed top-16 md:block z-30 md:z-10 bg-white md:bg-transparent overflow-y-auto max-h-screen md:text-center md:max-h-[90vh] pb-30"
+        :class="showNav ? 'w-full' : 'w-0'"
+      >
         <ContentNavigation v-slot="{ navigation }">
           <div v-for="link of navigation" :key="link._path">
             <div v-if="link.title.toLowerCase() === title" class="">
               <!-- {{ link }} -->
               <ul class="flex flex-col space-y-2 pt-10 md:pt-0">
                 <li v-for="(pageTitleChild, idx) in link.children" :key="idx">
-                  <h1 v-if="pageTitleChild.children" class="font-bold text-uppercase">
+                  <h1
+                    v-if="pageTitleChild.children"
+                    class="font-bold text-uppercase"
+                  >
                     {{ pageTitleChild.title }}
                   </h1>
-                  <ul v-if="pageTitleChild.children" class="list-inside mt-4 pl-2 space-y-3">
+                  <ul
+                    v-if="pageTitleChild.children"
+                    class="list-inside mt-4 pl-2 space-y-3"
+                  >
                     <li v-for="i in pageTitleChild.children">
                       <router-link :to="`${i._path}`">
                         {{ i.title }}
@@ -40,26 +47,36 @@
       <div class="pb-10">
         <slot />
       </div>
-      <div v-if="showTableContent && toc.length > 0" class="w-full max-w-[250px] text-center hidden lg:block">
-        <div class="sticky top-20  overflow-y-auto md:max-h-[90vh] pb-30">
+      <div
+        v-if="showTableContent && toc.length > 0"
+        class="w-full max-w-[250px] text-center hidden lg:block"
+      >
+        <div class="sticky top-20 overflow-y-auto md:max-h-[90vh] pb-30">
           <div class="grid justify-end">
             <h2 class="text-sm font-bold mb-4">Table Of Contents</h2>
             <ul class="space-y-2">
               <template v-for="(t, k) in toc" :key="`toc-item-${k}`">
                 <li>
-                  <router-link :class="{
-                    'text-sm ml-4': t.depth == 2,
-                    'text-[13px] ml-6': t.depth > 2,
-                  }" class="capitalize" :to="`#${t.id}`">{{ t.title }}</router-link>
+                  <router-link
+                    :class="{
+                      'text-sm ml-4': t.depth == 2,
+                      'text-[13px] ml-6': t.depth > 2,
+                    }"
+                    class="capitalize"
+                    :to="`#${t.id}`"
+                    >{{ t.title }}</router-link
+                  >
                 </li>
-
               </template>
             </ul>
           </div>
         </div>
       </div>
     </div>
-    <div class="bottom-nav flex justify-between items-center min-w-[200px] px-10 py-8" v-if="showPrevNext">
+    <div
+      class="bottom-nav flex justify-between items-center min-w-[200px] px-10 py-8"
+      v-if="showPrevNext"
+    >
       <router-link :to="prev._path" v-if="prev">
         <!-- {{ computedSourround }} -->
         <prev-button :title-details="prev"></prev-button>
@@ -72,15 +89,15 @@
 </template>
 
 <script setup lang="ts">
-import NextButton from './next-button.vue'
-import PrevButton from './prev-button.vue'
+import NextButton from "./next-button.vue";
+import PrevButton from "./prev-button.vue";
 import SideBar from "./SideBar.vue";
 import NavBar from "./NavBar.vue";
 import { onBeforeRouteLeave, onBeforeRouteUpdate, useRoute } from "vue-router";
 import { useAsyncData } from "#app";
 import { queryContent } from "~~/.nuxt/imports";
 import { useHead } from "~~/.nuxt/imports";
-import { useGlobalStore } from "../../stores/global"
+import { useGlobalStore } from "../../stores/global";
 interface Props {
   title: string;
   blog: object;
@@ -93,14 +110,14 @@ let props = withDefaults(defineProps<Props>(), {
 let progressWidth = ref(0);
 let showNav = ref(false);
 let store = useGlobalStore();
-let sideBarTitles = ref(null)
-let testTitle = ref(null)
+let sideBarTitles = ref(null);
+let testTitle = ref(null);
 let computedTitle = computed(() => {
   if (testTitle.value) {
-    return testTitle.value
+    return testTitle.value;
   }
-  return props.title
-})
+  return props.title;
+});
 function handleShowNav() {
   showNav.value = !showNav.value;
 }
@@ -109,26 +126,30 @@ async function fetchData() {
   console.log("isDocsLoading", isDocsLoading.value);
   // Set the progress bar to 0%
   let progress = 0;
-  while (isDocsLoading.value && progress <= 100) {
-    console.log("isDocsLoading22", isDocsLoading.value, progress);
+  while (isDocsLoading.value && progress != 100) {
+    // console.log("isDocsLoading22", isDocsLoading.value, progress);
     // Fetch the data here
     // Increment the progress bar by 10%
     if (progress < 100) {
       if (progress == 80 && isDocsLoading.value) {
-        progress += 1
+        progress += 1;
       } else {
-        progress += 2
+        progress += 2;
       }
     }
     // Update the progress value
     progressWidth.value = progress;
     // Sleep for 1 second to slow down the loop
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
   }
 }
-watch(isDocsLoading, (val) => {
-  fetchData()
-}, { immediate: true });
+watch(
+  isDocsLoading,
+  (val) => {
+    fetchData();
+  },
+  { immediate: true }
+);
 // let computedSideBarTitles = computed(() => {
 //   return store.sideBarTitles
 // })
@@ -162,41 +183,43 @@ const toc = computed(() => {
   });
   return toc;
 });
-let { path } = useRoute()
-console.log({ path })
-let showPrevNext = ref(false)
+let { path } = useRoute();
+console.log({ path });
+let showPrevNext = ref(false);
 const [prev, next] = await queryContent().findSurround(path);
 if (prev || next) {
-  showPrevNext.value = true
+  showPrevNext.value = true;
 }
 
 console.log({ prev, next });
 let computedSourround = computed(() => {
   return {
-    prev:{
+    prev: {
       title: prev?.title,
-      path: prev?._path
+      path: prev?._path,
     },
-    next:{
+    next: {
       title: next?.title,
-      path: next?._path
-    }
-  }
-})
+      path: next?._path,
+    },
+  };
+});
 </script>
 
 <style scoped>
 .article-link {
   @layer prose-a: text-pry-dark before:prose-headings:content-['#'] before:prose-headings:mr-1 before:prose-headings:text-pry-dark before:prose-h1:content-[''];
 }
-.progress-bar>div {
+
+.progress-bar > div {
   height: 100%;
   border-radius: 10px;
   /* background-image: linear-gradient(to right, lightskyblue, blue); */
   /* background-size: 360px 100%; */
   transition: width 200ms;
 }
-.progress-bar>div {
+
+.progress-bar > div {
   @apply bg-gradient-to-r from-pry-dark to-pink-600;
 }
 </style>

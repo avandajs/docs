@@ -47,6 +47,11 @@ watch(useRoute(), () => {
   store.changeDocLoading(true)
 
 })
+watch(useRoute(), () => {
+  console.log("route changed", store.gloablVar);
+  store.changeDocLoading(true)
+
+})
 onMounted(() => {
   articleLoaded.value = true;
   store.changeDocLoading(false)
@@ -56,10 +61,10 @@ if (article.value) {
     title: `${article.value.title}`,
   });
 }
-const [prev, next] = await queryContent(computedSlug.value).findSurround(
-  computedSlug.value
-);
-console.log({ prev, next });
+// const [prev, next] = await queryContent(computedSlug.value).findSurround(
+//   computedSlug.value
+// );
+// console.log({ prev, next });
 </script>
 
 <style scoped>
