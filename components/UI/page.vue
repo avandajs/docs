@@ -192,24 +192,21 @@ if (prev || next) {
 }
 
 console.log({ prev, next });
-let computedSourround = computed(() => {
-  return {
-    prev: {
-      title: prev?.title,
-      path: prev?._path,
-    },
-    next: {
-      title: next?.title,
-      path: next?._path,
-    },
-  };
-});
+// let computedSourround = computed(() => {
+//   return {
+//     prev: {
+//       title: prev?.title,
+//       path: prev?._path,
+//     },
+//     next: {
+//       title: next?.title,
+//       path: next?._path,
+//     },
+//   };
+// });
 </script>
 
 <style scoped>
-.article-link {
-  @layer prose-a: text-pry-dark before:prose-headings:content-['#'] before:prose-headings:mr-1 before:prose-headings:text-pry-dark before:prose-h1:content-[''];
-}
 
 .progress-bar > div {
   height: 100%;

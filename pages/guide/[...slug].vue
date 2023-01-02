@@ -65,9 +65,6 @@
   </script>
   
   <style scoped>
-  .article-link {
-    @apply prose-a:text-pry-dark before:prose-headings:content-['#'] before:prose-headings:mr-1 before:prose-headings:text-pry-dark before:prose-h1:content-[''];
-  }
   
   .lg\:prose-base :where(tbody td:last-child, tfoot td:last-child):not(:where([class~="not-prose"] *)) {
     max-width: 200px;

@@ -12,6 +12,7 @@
 	@apply bg-gradient-to-r from-pry-dark to-pink-600;
 }
 
+
 .linear-grad-avanda-text {
 	background: linear-gradient(180deg, #6D28D9 0%, #D939CD 100%);
 	-webkit-background-clip: text;
@@ -30,3 +31,6 @@
 	opacity: 0;
 	transform: scale(0.99);
 } */
+.article-link {
+	@apply prose-a:text-pry-dark before:prose-headings:content-['#'] before:prose-headings:mr-1 before:prose-headings:text-pry-dark before:prose-h1:content-[''];
+}

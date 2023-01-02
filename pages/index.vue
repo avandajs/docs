@@ -1,6 +1,6 @@
 <template>
     <div>
-        <header class="">
+        <!-- <header class="">
             <page-nav-bar></page-nav-bar>
         </header>
         <main class=" mx-auto">
@@ -8,14 +8,15 @@
         </main>
         <div class="w-full h-[2px] bg-pry-darker mt-16"></div>
         <why-avanda-section class="mt-16"></why-avanda-section>
-        <div class="w-full h-[2px] bg-pry-darker mt-16"></div>
+        <div class="w-full h-[2px] bg-pry-darker mt-16"></div> -->
+        Hello worllaskjkd,fs
     </div>
 </template>
 
 <script setup lang="ts">
-import WhyAvandaSection from '../components/UI/HomePage/WhyAvandaSection.vue'
-import Hero from '../components/UI/HomePage/Hero.vue'
-import PageNavBar from '../components/UI/HomePage/PageNavBar.vue'
+// import WhyAvandaSection from '../components/UI/HomePage/WhyAvandaSection.vue'
+// import Hero from '../components/UI/HomePage/Hero.vue'
+// import PageNavBar from '../components/UI/HomePage/PageNavBar.vue'
 
 </script>
 
