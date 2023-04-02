@@ -1,6 +1,6 @@
 <template>
-    <div class="flex mx-auto w-full max-w-[1200px] mt-16">
-        <div class="left-part mt-20 w-full ">
+    <div class="flex mx-auto w-full mt-16 overflow-x-hidden">
+        <div class="left-part mt-20 w-full ml-28 ">
             <div class="">
                 <h1 class="text-5xl xxl:text-6xl font-semibold">Hello <span class="linear-grad-avanda-text">Avanda!</span></h1>
                 <p class="text-xl text-black pr-4 mt-4">Avanda is the perfect starting point for your next project, a progressive framework for
@@ -16,8 +16,8 @@
                     Github</a>
             </div>
         </div>
-        <div class="right-part w-full ">
-            <img src="../../../assets/images/code-hero-template.png" alt="code template hero picture" class="w-[900px] h-auto" >
+        <div class="right-part">
+            <img src="../../../assets/images/code-hero-template.png" alt="code template hero picture" class="w-[126rem]  relative top-0 left-[100px]  h-auto" >
         </div>
     </div>
 </template>
